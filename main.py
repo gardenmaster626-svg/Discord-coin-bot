@@ -125,7 +125,11 @@ def get_token_security(chain_id, token_address):
         data = response.json()
         result = data.get("result") or {}
 
-        return result.get(token_address.lower()) or result.get(token_address)
+        for address, token_data in result.items():
+            if address.lower() == token_address.lower():
+                return token_data
+
+        return None
 
     except Exception as e:
         print("GoPlus security check error:", e)
@@ -397,6 +401,17 @@ async def scan_coins():
                 security_chain_id,
                 token_address
             )
+        if not security_data:
+            print("BLOCKED: Security data unavailable")
+            continue
+        if security_data:
+            if (
+                security_data.get("is_honeypot") == 1
+                or security_data.get("cannot_buy") == 1
+                or security_data.get("is_blacklisted") == 1
+        ):
+                print("BLOCKED: Security check failed")
+                continue
         if security_data:
             if str(security_data.get("is_honeypot")) == "1":
                 continue
