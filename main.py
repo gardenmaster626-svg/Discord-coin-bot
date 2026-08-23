@@ -463,6 +463,7 @@ async def scan_coins():
             print("Sell Check: UNVERIFIED")
 
         contract = (top_pair.get("baseToken") or {}).get("address")
+        base_token = top_pair.get("baseToken") or {}
 
         if top_score >= 80:
 
