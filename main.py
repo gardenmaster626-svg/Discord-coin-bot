@@ -14,8 +14,22 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 def get_tokens():
     url = "https://api.dexscreener.com/token-profiles/latest/v1"
-    response = requests.get(url, timeout=10)
-    return response.json()
+    try:
+        response = requests.get(url, timeout=10)
+
+        if response.status_code != 200:
+            print("Token profile request failed:", response.status_code)
+            return []
+
+        try:
+            return response.json()
+        except ValueError:
+            print("Token profile API returned invalid JSON")
+            return []
+
+    except requests.RequestException as e:
+        print("Token profile request error:", e)
+        return []
 
 def get_token_pairs(chain_id, token_address):
     url = f"https://api.dexscreener.com/token-pairs/v1/{chain_id}/{token_address}"
