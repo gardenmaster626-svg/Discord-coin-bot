@@ -409,6 +409,8 @@ async def scan_coins():
                 security_data.get("is_honeypot") == 1
                 or security_data.get("cannot_buy") == 1
                 or security_data.get("is_blacklisted") == 1
+                or security_data.get("owner_change_balance") == 1
+                or security_data.get("is_open_source") != 1
         ):
                 print("BLOCKED: Security check failed")
                 continue
@@ -442,7 +444,9 @@ async def scan_coins():
     ranked.sort(key=lambda x: x[0], reverse=True)
 
     print(f"Scored {len(ranked)} coins")
-
+    if not ranked:
+        print("No coins passed security filters")
+        return
     if ranked:
         top_score, top_pair, top_honeypot, top_rug_risk, top_security_data = ranked[0]
 
