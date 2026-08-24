@@ -254,6 +254,9 @@ def rug_risk_score(pair, honeypot, security_data):
         risk += 10
     return min(risk, 100)
 def score_pair(pair):
+    if not pair:
+        return 0
+        
     score = 0
 
     liquidity = (pair.get("liquidity") or {}).get("usd") or 0
