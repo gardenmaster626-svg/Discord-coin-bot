@@ -381,7 +381,7 @@ async def scan_coins():
                             cluster_risk = "🟡 WATCH"
                         else:
                             cluster_risk = "🟢 LOW"
-        honeypot = False
+        honeypot = None
 
         if chain_id in ["ethereum", "bsc", "base"] and token_address:
             chain_map = {
