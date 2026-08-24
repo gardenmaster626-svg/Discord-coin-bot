@@ -427,8 +427,6 @@ async def scan_coins():
                 or str(security_data.get("owner_change_balance", "0")) == "1"
                 or str(security_data.get("is_open_source", "0")) != "1"
             ):
-    print("BLOCKED: Security check failed")
-    continue
                 print("BLOCKED: Security check failed")
                 continue
         if security_data:
