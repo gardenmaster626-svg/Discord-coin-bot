@@ -421,12 +421,14 @@ async def scan_coins():
             continue
         if security_data:
             if (
-                security_data.get("is_honeypot") == 1
-                or security_data.get("cannot_buy") == 1
-                or security_data.get("is_blacklisted") == 1
-                or security_data.get("owner_change_balance") == 1
-                or security_data.get("is_open_source") != 1
-        ):
+                str(security_data.get("is_honeypot", "0")) == "1"
+                or str(security_data.get("cannot_buy", "0")) == "1"
+                or str(security_data.get("is_blacklisted", "0")) == "1"
+                or str(security_data.get("owner_change_balance", "0")) == "1"
+                or str(security_data.get("is_open_source", "0")) != "1"
+            ):
+    print("BLOCKED: Security check failed")
+    continue
                 print("BLOCKED: Security check failed")
                 continue
         if security_data:
@@ -499,7 +501,7 @@ async def scan_coins():
         contract = (top_pair.get("baseToken") or {}).get("address")
         base_token = top_pair.get("baseToken") or {}
 
-        if top_score >= 80:
+        if top_score >= 75:
 
             channel = discord.utils.get(
                 client.get_all_channels(),
